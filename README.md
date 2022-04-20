@@ -1,5 +1,5 @@
 # Algorithm-Study
-
+---------------
 ## Study 진행
 
 ### What type?
