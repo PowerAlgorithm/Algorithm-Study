@@ -4,7 +4,7 @@ import java.util.*;
 class Main {
     static int[] visit;
     static boolean[] checked;
-    static int nodeCount, edgeCount, startNode, visitCount = 0;
+    static int nodeCount, edgeCount, startNode;
     static List<List<Integer>> list = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
@@ -42,10 +42,7 @@ class Main {
         for (int i = 0; i < nodeCount; i++)
             Collections.sort(list.get(i));
 
-        // 시작 노드 방문 체크 및 방문 순서 1
-        visit[startNode] = visitCount;
-        checked[startNode] = true;
-        dfs(startNode);
+        dfs(startNode, 0);
 
         // 방문 순서 배열 순회
         for (int i = 0; i < nodeCount; i++) {
@@ -57,14 +54,13 @@ class Main {
         br.close();
     }
 
-    public static void dfs(int node) {
+    public static void dfs(int node, int depth) {
+        visit[node] = depth;
+        checked[node] = true;
         // 인접 노드 순회
         for (int nearNode : list.get(node)) {
             if (!checked[nearNode]) {
-                checked[nearNode] = true;
-                // 방문 카운트는 전역 변수
-                visit[nearNode] = ++visitCount;
-                dfs(nearNode);
+                dfs(nearNode, depth + 1);
             }
         }
     }
