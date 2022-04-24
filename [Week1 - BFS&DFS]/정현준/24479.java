@@ -4,8 +4,9 @@ import java.util.*;
 class Main {
     static int[] visit;
     static boolean[] checked;
-    static int nodeCount , edgeCount , startNode , visitCount = 2;
+    static int nodeCount, edgeCount, startNode, visitCount = 2;
     static List<List<Integer>> list = new ArrayList<>();
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -21,11 +22,11 @@ class Main {
         visit = new int[nodeCount];
 
         // 양방향 인접 리스트 노드 크기만큼 초기화
-        for(int i = 0 ; i < nodeCount ; i++)
+        for (int i = 0; i < nodeCount; i++)
             list.add(new ArrayList<>());
 
         // 양방향 인접 리스트 생성
-        for(int i = 0 ; i < edgeCount ; i++){
+        for (int i = 0; i < edgeCount; i++) {
             st = new StringTokenizer(br.readLine());
             // 노드의 번호는 입력 값 - 1
             int node1 = Integer.parseInt(st.nextToken()) - 1;
@@ -35,7 +36,7 @@ class Main {
         }
 
         // 각 노드들의 인접 노드 오름차순으로 정렬
-        for(int i = 0 ; i < nodeCount ; i++)
+        for (int i = 0; i < nodeCount; i++)
             Collections.sort(list.get(i));
 
         // 시작 노드 방문 체크 및 방문 순서 1
@@ -44,7 +45,7 @@ class Main {
         dfs(startNode);
 
         // 방문 순서 배열 순회
-        for(int i = 0 ; i < nodeCount ; i++)
+        for (int i = 0; i < nodeCount; i++)
             bw.append(String.valueOf(visit[i])).append("\n");
 
         bw.flush();
@@ -52,10 +53,10 @@ class Main {
         br.close();
     }
 
-    public static void dfs(int node){
+    public static void dfs(int node) {
         // 인접 노드 순회
-        for(int nearNode : list.get(node)){
-            if(!checked[nearNode]){
+        for (int nearNode : list.get(node)) {
+            if (!checked[nearNode]) {
                 checked[nearNode] = true;
                 // 방문 카운트는 전역 변수
                 visit[nearNode] = visitCount++;
