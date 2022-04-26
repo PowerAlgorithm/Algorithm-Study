@@ -2,11 +2,32 @@
 using pii = std::pair<int, int>;
 
 constexpr int size = 51;
-int N, house, height[size][size];
+int N, low, high;
 pii start;
-char board[size][size];
-const int dx[] = { -1, -1, 0, 1, 1, 1, 0, -1 };
-const int dy[] = { 0, 1, 1, 1, 0, -1, -1, -1 };
+int height[size][size];
+bool visited[size][size];
+std::vector<pii> house;
+
+const int dx[] = {0, 0, 1, -1, 1, 1, -1, -1};
+const int dy[] = {1, -1, 0, 0, 1, -1, 1, -1};
+
+void dfs(int x, int y)
+{
+    if(x < 0 || x >= N || y < 0 || y >= N || visited[x][y] || height[x][y] < low || height[x][y] > high)
+        return;
+    visited[x][y] = true;
+    for(int i = 0; i < 8; i++)
+        dfs(x + dx[i], y + dy[i]);
+}
+
+bool chk()
+{
+    int cnt = 0;
+    for(int i = 0; i < (int)house.size(); i++)
+        if(visited[house[i].first][house[i].second]) // 방문된 집의 개수를 세어줌
+            cnt++;
+    return cnt == (int)house.size();
+}
 
 int main(int argc, char* argv[])
 {
@@ -14,76 +35,44 @@ int main(int argc, char* argv[])
     std::cin.tie(nullptr), std::cout.tie(nullptr);
 
     std::cin >> N;
-
+    char ch;
     for(int i = 0; i < N; i++)
     {
         for(int j = 0; j < N; j++)
         {
-            std::cin >> board[i][j];
-            if(board[i][j] == 'P') // 우체국 위치 = 시작 위치
+            std::cin >> ch;
+            if(ch == 'P') // 우체국
                 start = {i, j};
-            else if(board[i][j] == 'K')
-                house++;
+            else if(ch == 'K') // 집
+                house.push_back({i, j}); // 집의 좌표를 저장해줌
         }
     }
-    std::vector<int> v;
+    std::set<int> h;
     for(int i = 0; i < N; i++)
     {
         for(int j = 0; j < N; j++)
         {
             std::cin >> height[i][j];
-            v.push_back(height[i][j]);
+            h.insert(height[i][j]);
         }
     }
-    std::sort(v.begin(), v.end()); // 정렬
-    v.erase(std::unique(v.begin(), v.end()), v.end()); // 중복 제거
 
     int res = INT_MAX;
-    int left = 0, right = 0; // 투 포인터
-    while(left < (int)v.size())
+    auto left = h.begin(), right = h.begin(); // two pointer
+    while(right != h.end())
     {
-        int houseleft = house;
-        std::vector<std::vector<bool>> visited(N, std::vector<bool>(N));
-        std::queue<pii> q;
-
-        if(height[start.first][start.second] >= v[left] && height[start.first][start.second] <= v[right])
+        while(left != h.end())
         {
-            q.push(start);
-            visited[start.first][start.second] = true; // 시작 정점 방문 표시
-        }
-
-        while(!q.empty())
-        {
-            int x = q.front().first;
-            int y = q.front().second;
-            q.pop();
-
-            if(board[x][y] == 'K') // 집이라면
-                houseleft--;    // 남은 집 수 감소
+            memset(visited, false, sizeof(visited));
+            low = *left, high = *right;
+            dfs(start.first, start.second);
+            if(!chk())
+                break;
             
-            for(int i = 0; i < 8; i++)
-            {
-                int nX = x + dx[i];
-                int nY = y + dy[i];
-                if(nX < 0|| nY < 0 || nX >= N || nY >= N || visited[nX][nY])    // OOB 및 이미 방문
-                    continue;
-                if(height[nX][nY] >= v[left] && height[nX][nY] <= v[right])
-                {
-                    visited[nX][nY] = true;
-                    q.push({nX, nY}); // 방문할 수 있는 정점으로 넣어줌
-                }
-            }
+            res = std::min(res, *right - *left);
+            ++left;
         }
-
-        if(houseleft == 0) // 모든 집을 방문한 경우
-        {
-            res = std::min(res, v[right] - v[left]); // 결과값 갱신 : 현재 포인터가 가리키는 값의 차를 결과값으로
-            left++; // 탐색이 가능하니 왼쪽 포인터를 옮기고
-        }
-        else if(right + 1 < (int)v.size())
-            right++; // 탐색이 불가능하다면 오른쪽 포인터를 옮김
-        else
-            break;
+        ++right;
     }
     std::cout << res << '\n';
     return 0;
