@@ -58,4 +58,3 @@ for _ in range(T):
 
 for i in res:
     print(i)
-
