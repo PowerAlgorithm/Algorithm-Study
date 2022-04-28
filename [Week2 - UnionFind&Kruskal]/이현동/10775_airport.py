@@ -9,6 +9,11 @@ def find_parent(parent, x):
     parent[x] = p
     return parent[x]
 
+# def find_parent(parent, x):
+#     if parent[x] == x:
+#         return x
+#     return find_parent(parent, parent[x])
+
 def union(parent, a, b):
     a = find_parent(parent, a)
     b = find_parent(parent, b)
