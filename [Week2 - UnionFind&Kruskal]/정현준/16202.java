@@ -39,8 +39,6 @@ class Main {
     }
 
     public static int Union(Edge edge) {
-        nodes.get(edge.startNode).add(edge.endNode);
-        nodes.get(edge.endNode).add(edge.startNode);
 
         int startNodeRoot = Find(edge.startNode);
         int endNodeRoot = Find(edge.endNode);
@@ -64,7 +62,6 @@ class Main {
     static int[] relation;
     static int[] rank;
     static List<Edge> list;
-    static List<List<Integer>> nodes;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -75,10 +72,6 @@ class Main {
         int gameCount = Integer.parseInt(st.nextToken());
 
         list = new ArrayList<>();
-        nodes = new ArrayList<>();
-        for (int i = 0; i < nodeCount + 1; i++) {
-            nodes.add(new ArrayList<>());
-        }
 
         // 높이 배열 생성
         rank = new int[nodeCount + 1];
