@@ -2,49 +2,53 @@
 #define INF INT_MAX
 using namespace std;
 
-//https://velog.io/@binary_j/2610-%ED%9A%8C%EC%9D%98%EC%A4%80%EB%B9%84
 
 int N, M;
-bool arr[101][101];
-bool visit[101];
-vector<int> ans;
+bool arr[101][101]; // 그래프 간선 표시
+bool visit[101]; // 방문 표시
+vector<int> ans; // 답
 
-void floydWarshall(vector<int> grp){
-    int size = grp.size();
-    if(size == 1){ans.push_back(grp[0]); return;}
-    int d[101][101];
+void floydWarshall(vector<int> group){
+    int size = group.size(); // 그룹 내에 속한 인원 수
+    if(size == 1){
+        ans.push_back(group[0]); 
+        return;
+    }
+    int dist[101][101]; // 의사전달시간 계산
     
     for(int i=0; i<size; i++){
         for(int j=0; j<size; j++){
-            if (i == j) d[i][j] = 0;
-            else if(arr[grp[i]][grp[j]] == true) d[i][j] = 1;
-            else d[i][j] = size+1;
+            if (i == j) 
+                dist[i][j] = 0;
+            else if(arr[group[i]][group[j]] == true) 
+                dist[i][j] = 1;
+            else 
+                dist[i][j] = size+1;
         }
     }
     
     for(int k=0; k<size; k++){
         for(int i=0; i<size; i++){
             for(int j=0; j<size; j++){
-                if(d[i][k] + d[k][j] < d[i][j]){
-                    d[i][j] = d[i][k] + d[k][j];
+                if(dist[i][k] + dist[k][j] < dist[i][j]){
+                    dist[i][j] = dist[i][k] + dist[k][j];
                 }
             }
         }
     }
-    
-    // 위원장
+    // 그룹 장을 뽑는 부분
     int rep;
     int tmp = size+1;
     
     for(int i=0; i<size; i++){
-        // 정점으로부터 다른 정점까지의 거리의 최대값이 제일 작은 정점 -> 위원장
+        // 정점으로부터 다른 정점까지의 거리의 최대값이 제일 작은 정점 (그룹 장)
         int dis = 0;
         for(int j=0; j<size; j++){
-            dis = max(dis, d[i][j]);
+            dis = max(dis, dist[i][j]);
         }
         if(dis < tmp){
             tmp = dis;
-            rep = grp[i];
+            rep = group[i];
         }
     }
     
@@ -52,15 +56,16 @@ void floydWarshall(vector<int> grp){
 }
 
 void bfs(int V){
-    // 위원회 회원들을 담을 벡터 grp
-    vector<int> grp;
+    // 위원회 회원들을 담을 벡터 group
+    // 뻗어나갈 수 있는 그룹을 만들기
+    vector<int> group;
     queue<int> q;
     q.push(V);
     visit[V] = true;
     
     while(!q.empty()) {
         V = q.front();
-        grp.push_back(V);
+        group.push_back(V);
         q.pop();
         for(int i=1; i<=N; i++) {
             if(visit[i] == true || arr[i][V] == false) continue;
@@ -68,7 +73,7 @@ void bfs(int V){
             visit[i] = true;
         }
     }
-    floydWarshall(grp);
+    floydWarshall(group);
 }
 
 int main(){
@@ -85,7 +90,7 @@ int main(){
     }
     
     for(int i=1; i<=N; i++){
-        // 위원회 구성
+        // 위원회 구성, 그룹을 짓는 부분
         if(!visit[i])
             bfs(i);
     }
