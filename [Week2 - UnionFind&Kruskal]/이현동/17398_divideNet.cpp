@@ -9,7 +9,7 @@ Q번 제거를 통해 나오는 비용의 합
 */
 
 typedef long long ll;
-const int MAX = 1e6;
+const int MAX = 1e6; //100000
 int n,m,q;
 int Parent[MAX]; // Parent[node] == parent of node
 int cost[MAX];
