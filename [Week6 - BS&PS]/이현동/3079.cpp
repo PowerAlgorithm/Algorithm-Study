@@ -15,6 +15,7 @@ int main()
         cin >> T[i];
     
     ll l = 1, r = (*max_element(T.begin(), T.end())*M);
+    
     while(l < r){
         ll mid = (l + r) / 2;
         ll cnt = 0;
