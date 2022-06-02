@@ -2,7 +2,7 @@
 using namespace std;
 
 int ans = 0;
-int r = 0, c = 0;
+int N, r, c;
 
 void searchZ(int x, int y, int size)
 {
@@ -28,7 +28,6 @@ int main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
-    int N;
     cin >> N >> r >> c;
 
     searchZ(0, 0, (1 << N));
