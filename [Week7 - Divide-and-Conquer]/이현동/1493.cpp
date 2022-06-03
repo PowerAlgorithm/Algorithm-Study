@@ -11,10 +11,12 @@ bool flag = true;
 
 void cubeCount(int l, int w, int h, int idx)
 {
+    cout << l <<' ' << w <<' ' << h << ' ' << "idx :"<< idx << '\n';
     if(l == 0 || w == 0 || h == 0)
         return;
     
-    for (int i = idx; i > -1;i--){
+    for (int i = idx; i > -1; i--)
+    {
         if (cube[i].second > 0 && cube[i].first <= l && cube[i].first <= h&& cube[i].first <= w){
             cube[i].second--;
             ans++;
