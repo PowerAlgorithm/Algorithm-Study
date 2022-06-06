@@ -25,19 +25,16 @@ vector<vector<ll>> matMul(vector<vector<ll>> A, vector<vector<ll>>B)
 vector<vector<ll>> pow(vector<vector<ll>> M, ll n)
 {
     if (n == 1){
-        vector<vector<ll>> tmp(6, vector<ll>(6, 0));
         for (int i = 0; i < N; i++)
-        {
-            for (int j = 0; j < N;j++){
-                tmp[i][j] = M[i][j];
-                tmp[i][j] %= 1000;
-            }
-        }
-        return tmp;
+            for (int j = 0; j < N;j++)
+                M[i][j] %= 1000;
+            
+        return M;
     }
-
+    
     vector<vector<ll>> tmp = pow(M, n / 2);
     vector<vector<ll>> res = matMul(tmp, tmp);
+    
     if (n % 2 == 0)
         return res;
     else
