@@ -12,7 +12,6 @@ void preOrder(int inStart, int inEnd, int postStart, int postEnd)
         return;
     int root = val[post[postEnd]];
     int lsize = root - inStart;
-    int rsize = inEnd - root;
     cout << in[root] << ' ';
 
     preOrder(inStart, root - 1, postStart, postStart + lsize - 1);
