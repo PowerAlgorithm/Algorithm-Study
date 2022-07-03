@@ -17,8 +17,8 @@ int bfs()
         string curr = q.front().first;
         int cnt = q.front().second;
         q.pop();
-
-        if(curr == End)
+        cout << curr << "\t cnt :" << cnt << '\n';
+        if (curr == End)
             return cnt;
         int zero = curr.find('0');
         int x = zero / 3;
@@ -28,7 +28,7 @@ int bfs()
         {
             int rx = x + dx[i];
             int ry = y + dy[i];
-            if (0 <= rx && rx < 3&& 0 <= ry && ry < 3){
+            if (0 <= rx && rx < 3 && 0 <= ry && ry < 3){
                 string next = curr;
                 swap(next[x * 3 + y], next[rx * 3 + ry]);
 
