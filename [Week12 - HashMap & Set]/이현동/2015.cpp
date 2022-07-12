@@ -2,33 +2,23 @@
 using namespace std;
 typedef long long ll;
 
-ll N, K;
-int ans = 0;
-ll arr[200001];
+int p_sum[200001];
 
-int main()
-{
-    ios::sync_with_stdio(0);
-    cin.tie(0);
+int main(){
+    int n, k, num;
+    cin >> n >> k;
+    map<int, ll> m; 
+    ll cnt = 0;
+    
+    m[0] = 1; 
 
-    cin >> N >> K;
-    ll tot = 0;
-    for (int i = 0; i < N;i++){
-        cin >> arr[i];
-        tot += arr[i];
+    for (int i=1; i<=n; i++){
+        cin >> num;
+        
+        p_sum[i] = p_sum[i-1] + num;
+        
+        cnt += m[p_sum[i] - k];
+        m[p_sum[i]]++;
     }
-    ll l = 0, r = N - 1;
-    while (l < r)
-    {   
-        if (tot > K){
-            tot -= arr[r];
-            r--;
-        }
-        else if( tot > K){
-            tot -= arr[l];
-            l++;
-        }
-    }
-
-    return 0;
+    cout << cnt;
 }
